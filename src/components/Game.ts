@@ -53,26 +53,26 @@ class Game {
 
   clickHandler(x: number, y: number) {
     if (this.board[x][y].type === "ball") {
-      if (!this.selected) { // select a ball if none is selected
-        this.selected = this.board[x][y];
-        this.board.forEach(row => {
-          row.forEach(square => {
-            if (square.ball)
-              square.ball.makeSmall();
-          });
+      this.selected = this.board[x][y];
+      this.board.forEach(row => {
+        row.forEach(square => {
+          if (square.ball)
+            square.ball.makeSmall();
         });
-        this.selected.ball?.makeBig();
+      });
+      this.selected.ball?.makeBig();
+    } else { // move selected ball to clicked square
+      if (this.selected) {
+        // TODO: validate move
+        this.board[x][y].type = "ball";
+        this.board[x][y].ball = this.selected.ball;
+        this.board[x][y].color = this.selected.color;
+        this.board[x][y].update();
+        this.selected.clear();
+        this.selected = undefined;
       }
-    } else if (this.selected) { // move selected ball to clicked square
-      // TODO: validate move
-      this.board[x][y].type = "ball";
-      this.board[x][y].ball = this.selected.ball;
-      this.board[x][y].color = this.selected.color;
-      this.board[x][y].update();
-      this.selected.clear();
-      this.selected = undefined;
-    } else {
-      this.selected = undefined;
+      else
+        this.selected = undefined;
     }
   }
 }
