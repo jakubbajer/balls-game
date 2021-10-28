@@ -1,2 +1,4 @@
 # balls-game
-### despite the pervy name, it's actually a school project
+
+### Despite the pervy name, it's actually a school project.
+### Learning TypeScript
