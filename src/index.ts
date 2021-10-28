@@ -1,3 +1,6 @@
-import './style.css';
+import Game from './components/Game';
+import './main.css';
 
-console.log("ready")
+let gameContainer: HTMLDivElement = document.querySelector("#game")!;
+const game = new Game(gameContainer);
+game.init();

@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 module.exports = {
     entry: './src/index.ts',
     devtool: "source-map",
@@ -11,7 +11,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             hash: true,
             filename: './index.html',
-            title: "Castlevania",
+            title: "Balls game",
             template: './src/index.html',
             chunks: ['index']
         }),
@@ -43,4 +43,4 @@ module.exports = {
     output: {
         filename: '[name].js',
     },
-}
+};

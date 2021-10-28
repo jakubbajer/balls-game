@@ -1,0 +1,82 @@
+$primary-color-dark: #616161;
+$primary-color: #9e9e9e;
+$primary-color-light: #f5f5f5;
+$primary-color-text: #212121;
+$accent-color: #607d8b;
+$primary-text-color: #212121;
+$secondary-text-color: #757575;
+$divider-color: #bdbdbd;
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Sans mono", monospace;
+}
+
+body {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+}
+
+.gameWrapper {
+  background-color: $primary-color;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  #game {
+    $gameSize: 90vh;
+    $squareSize: $gameSize / 9;
+
+    background-color: $primary-color-light;
+    display: flex;
+    flex-direction: column;
+    width: $gameSize;
+    height: $gameSize;
+    outline: 1px solid $accent-color;
+
+    .row {
+      display: flex;
+    }
+
+    .square {
+      width: $squareSize;
+      height: $squareSize;
+      border: 1px solid $accent-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .ball {
+        width: 65%;
+        height: 65%;
+        border: 2px solid $accent-color;
+        border-radius: $squareSize / 2;
+
+        &.big {
+          width: 90%;
+          height: 90%;
+        }
+      }
+
+      &:hover {
+        .ball {
+          width: 80%;
+          height: 80%;
+
+          &.big {
+            width: 90%;
+            height: 90%;
+          }
+        }
+      }
+    }
+  }
+}
