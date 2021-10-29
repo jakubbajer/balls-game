@@ -1,5 +1,5 @@
 class Ball {
-  div: HTMLDivElement;
+  readonly div: HTMLDivElement;
 
   constructor(color: string, big: boolean) {
     this.div = document.createElement("div");

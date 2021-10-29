@@ -67,18 +67,6 @@ body {
           height: 90%;
         }
       }
-
-      &:hover {
-        .ball {
-          width: 80%;
-          height: 80%;
-
-          &.big {
-            width: 90%;
-            height: 90%;
-          }
-        }
-      }
     }
   }
 }

@@ -85,14 +85,4 @@ body {
   width: 90%;
   height: 90%;
 }
-
-.gameWrapper #game .square:hover .ball {
-  width: 80%;
-  height: 80%;
-}
-
-.gameWrapper #game .square:hover .ball.big {
-  width: 90%;
-  height: 90%;
-}
 /*# sourceMappingURL=main.css.map */

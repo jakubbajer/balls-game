@@ -1,5 +1,5 @@
 import Square from "./Square";
-import Validator from "./Validator";
+import Pathfinder from "./Pathfinder";
 
 class Game {
   container: HTMLDivElement;
@@ -21,7 +21,7 @@ class Game {
       let row = document.createElement("div");
       row.classList.add("row");
       for (let y = 0; y < 9; y++) {
-        const square = new Square(x, y, this.clickHandler.bind(this));
+        const square = new Square(x, y, this.clickHandler.bind(this), this.hoverHandler.bind(this));
         square.addDiv(row);
         arr.push(square);
       }
@@ -52,7 +52,7 @@ class Game {
   }
 
   clickHandler(x: number, y: number) {
-    if (this.board[x][y].type === "ball" && Validator.isMovePossible(this.board, x, y)) {
+    if (this.board[x][y].type === "ball" && Pathfinder.isMovePossible(this.board, x, y)) {
       this.selected = this.board[x][y];
       this.board.forEach(row => {
         row.forEach(square => {
@@ -63,7 +63,7 @@ class Game {
       this.selected.ball?.makeBig();
     } else { // move selected ball to clicked square
       if (this.selected) {
-        // TODO: validate move
+        // TODO: pathfind
         this.board[x][y].type = "ball";
         this.board[x][y].ball = this.selected.ball;
         this.board[x][y].color = this.selected.color;
@@ -73,6 +73,12 @@ class Game {
       }
       else
         this.selected = undefined;
+    }
+  }
+
+  hoverHandler(square: Square) {
+    if (this.selected) {
+      let pathfinder = new Pathfinder(this.selected, square, this.board);
     }
   }
 }

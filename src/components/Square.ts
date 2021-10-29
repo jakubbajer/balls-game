@@ -8,10 +8,12 @@ class Square {
   color: string;
   ball: Ball | undefined;
   clickCallback: Function;
+  hoverCallback: Function;
 
-  constructor(x: number, y: number, clickCallback: Function) {
+  constructor(x: number, y: number, clickCallback: Function, hoverCallback: Function) {
     this.div = document.createElement("div");
     this.clickCallback = clickCallback;
+    this.hoverCallback = hoverCallback;
     this.color = "";
     this.type = "empty";
     this.x = x;
@@ -20,6 +22,7 @@ class Square {
     this.div.setAttribute("y", this.y.toString());
     this.div.classList.add("square");
     this.div.addEventListener("click", () => this.clickCallback(this.x, this.y));
+    this.div.addEventListener("mouseover", () => this.hoverCallback(this));
   }
 
   addDiv(container: HTMLDivElement) {
