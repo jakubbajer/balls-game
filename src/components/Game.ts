@@ -63,7 +63,7 @@ class Game {
       this.selected.ball?.makeBig();
     } else { // move selected ball to clicked square
       if (this.selected) {
-        // TODO: pathfind
+        this.clearBackgrounds();
         this.board[x][y].type = "ball";
         this.board[x][y].ball = this.selected.ball;
         this.board[x][y].color = this.selected.color;
@@ -77,9 +77,17 @@ class Game {
   }
 
   hoverHandler(square: Square) {
+    let pathfinder;
     if (this.selected) {
-      let pathfinder = new Pathfinder(this.selected, square, this.board);
+      pathfinder = new Pathfinder(this.selected, square, this.board);
     }
+    return pathfinder?.canMove;
+  }
+
+  clearBackgrounds() {
+    this.board.forEach(row => {
+      row.forEach(square => square.div.style.backgroundColor = "");
+    });
   }
 }
 
