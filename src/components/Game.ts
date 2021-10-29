@@ -52,7 +52,7 @@ class Game {
   }
 
   clickHandler(x: number, y: number) {
-    if (this.board[x][y].type === "ball") {
+    if (this.board[x][y].type === "ball" && Validator.isMovePossible(this.board, x, y)) {
       this.selected = this.board[x][y];
       this.board.forEach(row => {
         row.forEach(square => {

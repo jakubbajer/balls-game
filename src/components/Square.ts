@@ -10,12 +10,12 @@ class Square {
   clickCallback: Function;
 
   constructor(x: number, y: number, clickCallback: Function) {
+    this.div = document.createElement("div");
     this.clickCallback = clickCallback;
     this.color = "";
     this.type = "empty";
     this.x = x;
     this.y = y;
-    this.div = document.createElement("div");
     this.div.setAttribute("x", this.x.toString());
     this.div.setAttribute("y", this.y.toString());
     this.div.classList.add("square");
