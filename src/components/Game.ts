@@ -6,10 +6,11 @@ class Game {
   board: Square[][];
   colors: string[];
   selected: Square | undefined;
+  pathfinder: Pathfinder | undefined;
 
   constructor(container: HTMLDivElement) {
-    this.colors = ["DarkCyan", "DarkOrange", "DarkGreen",
-      "DarkKhaki", "DarkSalmon", "DarkRed", "DarkSlateBlue"];
+    this.colors = ["#008B8B", "#FF8C00", "#006400",
+      "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
     this.container = container;
     this.board = this.getBoard();
   }
@@ -62,7 +63,7 @@ class Game {
       });
       this.selected.ball?.makeBig();
     } else { // move selected ball to clicked square
-      if (this.selected) {
+      if (this.selected && this.pathfinder && this.pathfinder.canMove) {
         this.clearBackgrounds();
         this.board[x][y].type = "ball";
         this.board[x][y].ball = this.selected.ball;
@@ -71,17 +72,14 @@ class Game {
         this.selected.clear();
         this.selected = undefined;
       }
-      else
-        this.selected = undefined;
+      else if (this.pathfinder && !this.pathfinder.canMove) { }
+      else this.selected = undefined;
     }
   }
 
   hoverHandler(square: Square) {
-    let pathfinder;
-    if (this.selected) {
-      pathfinder = new Pathfinder(this.selected, square, this.board);
-    }
-    return pathfinder?.canMove;
+    if (this.selected)
+      this.pathfinder = new Pathfinder(this.selected, square, this.board);
   }
 
   clearBackgrounds() {
