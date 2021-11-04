@@ -23,6 +23,9 @@ body {
   display: flex;
 }
 
+$gameSize: 90vh;
+$squareSize: $gameSize / 9;
+
 .gameWrapper {
   background-color: $primary-color;
   flex: 1;
@@ -31,9 +34,6 @@ body {
   align-items: center;
 
   #game {
-    $gameSize: 90vh;
-    $squareSize: $gameSize / 9;
-
     background-color: $primary-color-light;
     display: flex;
     flex-direction: column;
@@ -42,31 +42,59 @@ body {
     width: $gameSize;
     height: $gameSize;
     border: 2px solid $accent-color;
+  }
 
-    .row {
-      display: flex;
-    }
+  .row {
+    display: flex;
+  }
 
-    .square {
-      width: $squareSize;
-      height: $squareSize;
-      border: 1px solid $accent-color;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+  .square {
+    width: $squareSize;
+    height: $squareSize;
+    border: 1px solid $accent-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-      .ball {
-        width: 65%;
-        height: 65%;
-        border: 2px solid $accent-color;
-        border-radius: $squareSize / 2;
+    .ball {
+      width: 65%;
+      height: 65%;
+      border: 2px solid $accent-color;
+      border-radius: $squareSize / 2;
 
-        &.big {
-          width: 90%;
-          height: 90%;
-        }
+      &.big {
+        width: 90%;
+        height: 90%;
       }
     }
   }
+
+  #nextBalls.row {
+    flex-direction: column;
+    background-color: $primary-color-light;
+    margin-right: $squareSize;
+    outline: 1px solid $accent-color;
+    position: absolute;
+    left: -2 * $squareSize;
+
+    .square {
+      cursor: default;
+    }
+  }
+
+  #score {
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    width: $squareSize;
+    right: -2 * $squareSize;
+  }
+}
+
+.gameContainer {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,5 +1,6 @@
 import PathfindNode from "./PathfindNode";
 import Square from "./Square";
+import Coords from "./interfaces/Coords";
 
 class Pathfinder {
   openList: PathfindNode[];
@@ -18,12 +19,12 @@ class Pathfinder {
     this.openList = [this.current];
     this.closedList = [];
 
-    console.log("Start");
+    // console.log("Start");
     if (start !== end)
       this.findNextBest();
   }
 
-  getPath() {
+  getPath(): Square[] {
     let last = this.closedList.find(node => node.square.x === this.end.x && node.square.y === this.end.y)!;
     let path: Square[] = [];
     path.push(last.square);
@@ -37,6 +38,7 @@ class Pathfinder {
       let color: string = this.start.color + "66";
       square.div.style.backgroundColor = color;
     });
+    return path;
   }
 
   private findNextBest() {
@@ -51,8 +53,7 @@ class Pathfinder {
 
       if (this.current.square.x === this.end.x && this.current.square.y === this.end.y) {
         this.getPath();
-
-        console.log("End");
+        // console.log("End");
       } else
         this.findNextBest();
     }
@@ -85,18 +86,18 @@ class Pathfinder {
     let possible: PathfindNode[] = [];
     let x = fromNode.square.x;
     let y = fromNode.square.y;
-    let toCheck;
+    let toCheck: Coords[];
     toCheck = [{ x: x - 1, y: y }, { x: x + 1, y: y }, { x: x, y: y - 1 }, { x: x, y: y + 1 }];
 
     //  For each of the 4 squares adjacent to this current square...
     if (toCheck)
       toCheck.forEach(squareCoords => {
-        if ((this.board[squareCoords.x] && this.board[squareCoords.x][squareCoords.y] && this.board[squareCoords.x][squareCoords.y].type === "empty")                // If it exist and is empty and...
+        if ((this.board[squareCoords.x] && this.board[squareCoords.x][squareCoords.y] && this.board[squareCoords.x][squareCoords.y].type === "empty")   // If it exist and is empty and...
           && !this.checkIfIsOnList(squareCoords.x, squareCoords.y, this.closedList)) {                                                                  // if it isn't on the closed list, do:
           let newNode = new PathfindNode(this.board[squareCoords.x][squareCoords.y], fromNode.square, fromNode.gScore + 1);
           if (!this.checkIfIsOnList(squareCoords.x, squareCoords.y, this.openList))                                                                     // if it isn't on the open list
             possible.push(newNode);                                                                                                                     // add it to the open list
-          else {                                                                                                                                        // if it is,         // find it and check to see if it's path to it is better
+          else {                                                                                                                                        // if it is find it and check to see if it's path to it is better
             let duplicateNodeIndex = this.openList.findIndex((node) => node.square.x === squareCoords.x && node.square.y === squareCoords.y)!;
             let isBetter = newNode.gScore > this.openList[duplicateNodeIndex].gScore;
             if (isBetter) {                                                                                                                             // If so,

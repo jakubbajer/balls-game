@@ -32,7 +32,7 @@ class Square {
   update() {
     if (this.color !== "") {
       this.div.innerHTML = "";
-      this.ball = new Ball(this.color, false);
+      this.ball = new Ball(this.color);
       this.div.append(this.ball.div);
     } else {
       this.ball = undefined;

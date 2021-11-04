@@ -1,7 +1,7 @@
 class Ball {
   readonly div: HTMLDivElement;
 
-  constructor(color: string, big: boolean) {
+  constructor(color: string) {
     this.div = document.createElement("div");
     this.div.classList.add("ball");
     this.div.style.backgroundColor = color;

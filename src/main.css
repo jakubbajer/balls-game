@@ -52,13 +52,13 @@ body {
   border: 2px solid #607d8b;
 }
 
-.gameWrapper #game .row {
+.gameWrapper .row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.gameWrapper #game .square {
+.gameWrapper .square {
   width: 10vh;
   height: 10vh;
   border: 1px solid #607d8b;
@@ -74,15 +74,52 @@ body {
   cursor: pointer;
 }
 
-.gameWrapper #game .square .ball {
+.gameWrapper .square .ball {
   width: 65%;
   height: 65%;
   border: 2px solid #607d8b;
   border-radius: 5vh;
 }
 
-.gameWrapper #game .square .ball.big {
+.gameWrapper .square .ball.big {
   width: 90%;
   height: 90%;
+}
+
+.gameWrapper #nextBalls.row {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #f5f5f5;
+  margin-right: 10vh;
+  outline: 1px solid #607d8b;
+  position: absolute;
+  left: -20vh;
+}
+
+.gameWrapper #nextBalls.row .square {
+  cursor: default;
+}
+
+.gameWrapper #score {
+  font-weight: bold;
+  font-size: 20px;
+  position: absolute;
+  width: 10vh;
+  right: -20vh;
+}
+
+.gameContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /*# sourceMappingURL=main.css.map */
