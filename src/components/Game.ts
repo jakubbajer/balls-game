@@ -12,8 +12,10 @@ class Game {
   pathfinder: Pathfinder | undefined;
   nextBalls: NextBall[];
   paused: boolean;
+  score: number;
 
   constructor(container: HTMLDivElement) {
+    this.score = 0;
     this.colors = ["#008B8B", "#FF8C00", "#006400",
       "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
     this.container = container;
@@ -86,6 +88,7 @@ class Game {
           this.delay(500)
             .then(() => {
               this.clearBackgrounds();
+              this.checkForHits(x, y);
               this.nextBalls.forEach(nextBall => {
                 this.addBall(nextBall.color);
               });
@@ -98,6 +101,121 @@ class Game {
         else this.selected = undefined;
       }
     }
+  }
+
+  checkForHits(x: number, y: number) {
+    let initial = this.board[x][y];
+    let current = this.board[x][y];
+    let counter = 1;
+    let potential: Square[] = [];
+    let toDelete: Square[] = [];
+    // check up - down,
+    // go to top
+    while (this.board[x - 1] && this.board[x - 1][y].color === initial.color) {
+      x -= 1;
+      current = this.board[x][y];
+    }
+    potential.push(current);
+
+    // go down and count
+    while (this.board[x + 1] && this.board[x + 1][y].color === initial.color) {
+      x += 1;
+      counter += 1;
+      current = this.board[x][y];
+      potential.push(current);
+    }
+
+    if (counter >= 5) {
+      toDelete.push(...potential);
+    }
+    counter = 1;
+    potential = [];
+    current = initial;
+    x = initial.x;
+    y = initial.y;
+
+    // check left - right
+    while (this.board[x][y - 1] && this.board[x][y - 1].color === initial.color) {
+      y -= 1;
+      current = this.board[x][y];
+    }
+    potential.push(current);
+
+    // go right and count
+    while (this.board[x][y + 1] && this.board[x][y + 1].color === initial.color) {
+      y += 1;
+      counter += 1;
+      current = this.board[x][y];
+      potential.push(current);
+    }
+
+    if (counter >= 5) {
+      toDelete.push(...potential);
+    }
+    counter = 1;
+    potential = [];
+    current = initial;
+    x = initial.x;
+    y = initial.y;
+
+    // check upleft - downright
+    while (this.board[x - 1] && this.board[x - 1][y - 1] && this.board[x - 1][y - 1].color === initial.color) {
+      x -= 1;
+      y -= 1;
+      current = this.board[x][y];
+    }
+    potential.push(current);
+
+    // go downright and count
+    while (this.board[x + 1] && this.board[x + 1][y + 1] && this.board[x + 1][y + 1].color === initial.color) {
+      x += 1;
+      y += 1;
+      counter += 1;
+      current = this.board[x][y];
+      potential.push(current);
+    }
+
+    if (counter >= 5) {
+      toDelete.push(...potential);
+    }
+
+    counter = 1;
+    potential = [];
+    current = initial;
+    x = initial.x;
+    y = initial.y;
+
+    // check upright - downleft
+    while (this.board[x - 1] && this.board[x - 1][y + 1] && this.board[x - 1][y + 1].color === initial.color) {
+      x -= 1;
+      y += 1;
+      current = this.board[x][y];
+    }
+    potential.push(current);
+
+    // go downright and count
+    while (this.board[x + 1] && this.board[x + 1][y - 1] && this.board[x + 1][y - 1].color === initial.color) {
+      x += 1;
+      y -= 1;
+      counter += 1;
+      current = this.board[x][y];
+      potential.push(current);
+    }
+
+    if (counter >= 5) {
+      toDelete.push(...potential);
+    }
+
+    toDelete = Array.from(new Set(toDelete));
+    toDelete.forEach(square => {
+      square.clear();
+    });
+    this.score += toDelete.length;
+    this.updateScore();
+  }
+
+  updateScore() {
+    this.scoreContainer.innerText = this.score.toString();
   }
 
   getNewBalls(): NextBall[] {
@@ -123,7 +241,12 @@ class Game {
         this.addBall(color);
       }
     } else {
-      console.warn("Game end!");
+      this.paused = true;
+      alert("Przegrałeś! Twój wynik to " + this.score);
+    }
+    if (this.paused && !this.board.some(row => { return row.some(square => square.type === "empty"); })) {
+      this.paused = true;
+      alert("Przegrałeś! Twój wynik to " + this.score);
     }
   }
 

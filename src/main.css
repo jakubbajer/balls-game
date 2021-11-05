@@ -102,12 +102,13 @@ body {
   cursor: default;
 }
 
-.gameWrapper #score {
+.gameWrapper .score {
   font-weight: bold;
   font-size: 20px;
   position: absolute;
   width: 10vh;
   right: -20vh;
+  text-align: center;
 }
 
 .gameContainer {

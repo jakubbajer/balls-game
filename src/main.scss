@@ -83,12 +83,13 @@ $squareSize: $gameSize / 9;
     }
   }
 
-  #score {
+  .score {
     font-weight: bold;
     font-size: 20px;
     position: absolute;
     width: $squareSize;
     right: -2 * $squareSize;
+    text-align: center;
   }
 }
 
