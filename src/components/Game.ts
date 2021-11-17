@@ -1,8 +1,10 @@
 import Square from "./Square";
 import Pathfinder from "./Pathfinder";
 import NextBall from "./interfaces/NextBall";
+import Colors from "./interfaces/Colors";
 import grayscale from "./decorators/grayscale";
 import mock from "./decorators/mock";
+
 
 class Game {
   container: HTMLDivElement;
@@ -10,7 +12,7 @@ class Game {
   scoreContainer: HTMLDivElement;
   board: Square[][];
   // @grayscale()
-  static colors: string[] = ["#008B8B", "#FF8C00", "#006400", "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
+  static colors: Colors = ["#008B8B", "#FF8C00", "#006400", "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
   selected: Square | undefined;
   pathfinder: Pathfinder | undefined;
   nextBalls: NextBall[];
