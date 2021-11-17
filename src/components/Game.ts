@@ -1,13 +1,16 @@
 import Square from "./Square";
 import Pathfinder from "./Pathfinder";
 import NextBall from "./interfaces/NextBall";
+import grayscale from "./decorators/grayscale";
+import mock from "./decorators/mock";
 
 class Game {
   container: HTMLDivElement;
   nextContainer: HTMLDivElement;
   scoreContainer: HTMLDivElement;
   board: Square[][];
-  colors: string[];
+  // @grayscale()
+  static colors: string[] = ["#008B8B", "#FF8C00", "#006400", "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
   selected: Square | undefined;
   pathfinder: Pathfinder | undefined;
   nextBalls: NextBall[];
@@ -16,8 +19,6 @@ class Game {
 
   constructor(container: HTMLDivElement) {
     this.score = 0;
-    this.colors = ["#008B8B", "#FF8C00", "#006400",
-      "#BDB76B", "#E9967A", "#8B0000", "#483D8B"];
     this.container = container;
     this.nextContainer = document.querySelector("#nextBalls")!;
     this.scoreContainer = document.querySelector("#score")!;
@@ -88,7 +89,7 @@ class Game {
           this.delay(500)
             .then(() => {
               this.clearBackgrounds();
-              this.checkForHits(x, y);
+              this.checkForHits(x, y, this.board);
               this.nextBalls.forEach(nextBall => {
                 this.addBall(nextBall.color);
               });
@@ -103,26 +104,26 @@ class Game {
     }
   }
 
-
-  checkForHits(x: number, y: number) {
-    let initial = this.board[x][y];
-    let current = this.board[x][y];
+  // @mock()
+  checkForHits(x: number, y: number, board: Square[][]) {
+    let initial = board[x][y];
+    let current = board[x][y];
     let counter = 1;
     let potential: Square[] = [];
     let toDelete: Square[] = [];
     // check up - down,
     // go to top
-    while (this.board[x - 1] && this.board[x - 1][y].color === initial.color) {
+    while (board[x - 1] && board[x - 1][y].color === initial.color) {
       x -= 1;
-      current = this.board[x][y];
+      current = board[x][y];
     }
     potential.push(current);
 
     // go down and count
-    while (this.board[x + 1] && this.board[x + 1][y].color === initial.color) {
+    while (board[x + 1] && board[x + 1][y].color === initial.color) {
       x += 1;
       counter += 1;
-      current = this.board[x][y];
+      current = board[x][y];
       potential.push(current);
     }
 
@@ -136,17 +137,17 @@ class Game {
     y = initial.y;
 
     // check left - right
-    while (this.board[x][y - 1] && this.board[x][y - 1].color === initial.color) {
+    while (board[x][y - 1] && board[x][y - 1].color === initial.color) {
       y -= 1;
-      current = this.board[x][y];
+      current = board[x][y];
     }
     potential.push(current);
 
     // go right and count
-    while (this.board[x][y + 1] && this.board[x][y + 1].color === initial.color) {
+    while (board[x][y + 1] && board[x][y + 1].color === initial.color) {
       y += 1;
       counter += 1;
-      current = this.board[x][y];
+      current = board[x][y];
       potential.push(current);
     }
 
@@ -160,19 +161,19 @@ class Game {
     y = initial.y;
 
     // check upleft - downright
-    while (this.board[x - 1] && this.board[x - 1][y - 1] && this.board[x - 1][y - 1].color === initial.color) {
+    while (board[x - 1] && board[x - 1][y - 1] && board[x - 1][y - 1].color === initial.color) {
       x -= 1;
       y -= 1;
-      current = this.board[x][y];
+      current = board[x][y];
     }
     potential.push(current);
 
     // go downright and count
-    while (this.board[x + 1] && this.board[x + 1][y + 1] && this.board[x + 1][y + 1].color === initial.color) {
+    while (board[x + 1] && board[x + 1][y + 1] && board[x + 1][y + 1].color === initial.color) {
       x += 1;
       y += 1;
       counter += 1;
-      current = this.board[x][y];
+      current = board[x][y];
       potential.push(current);
     }
 
@@ -187,19 +188,19 @@ class Game {
     y = initial.y;
 
     // check upright - downleft
-    while (this.board[x - 1] && this.board[x - 1][y + 1] && this.board[x - 1][y + 1].color === initial.color) {
+    while (board[x - 1] && board[x - 1][y + 1] && board[x - 1][y + 1].color === initial.color) {
       x -= 1;
       y += 1;
-      current = this.board[x][y];
+      current = board[x][y];
     }
     potential.push(current);
 
     // go downright and count
-    while (this.board[x + 1] && this.board[x + 1][y - 1] && this.board[x + 1][y - 1].color === initial.color) {
+    while (board[x + 1] && board[x + 1][y - 1] && board[x + 1][y - 1].color === initial.color) {
       x += 1;
       y -= 1;
       counter += 1;
-      current = this.board[x][y];
+      current = board[x][y];
       potential.push(current);
     }
 
@@ -224,7 +225,7 @@ class Game {
   getNewBalls(): NextBall[] {
     let balls: NextBall[] = [];
     for (let i = 0; i < 3; i++) {
-      balls.push({ id: i, color: this.colors[Math.floor(Math.random() * 7)] });
+      balls.push({ id: i, color: Game.colors[Math.floor(Math.random() * 7)] });
     }
     return balls;
   }
@@ -244,8 +245,10 @@ class Game {
         this.addBall(color);
       }
     } else {
-      this.paused = true;
-      alert("Przegrałeś! Twój wynik to " + this.score);
+      if (!this.paused) {
+        alert("Przegrałeś! Twój wynik to " + this.score);
+        this.paused = true;
+      }
     }
     if (this.paused && !this.board.some(row => { return row.some(square => square.type === "empty"); })) {
       this.paused = true;
@@ -278,13 +281,3 @@ class Game {
 }
 
 export default Game;
-
-function mock(value: any) {
-  return function (
-    target: Object,
-    key: string | symbol,
-    desriptor: PropertyDescriptor
-  ) {
-
-  };
-}
