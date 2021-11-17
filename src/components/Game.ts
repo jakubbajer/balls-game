@@ -103,6 +103,7 @@ class Game {
     }
   }
 
+
   checkForHits(x: number, y: number) {
     let initial = this.board[x][y];
     let current = this.board[x][y];
@@ -212,6 +213,8 @@ class Game {
     });
     this.score += toDelete.length;
     this.updateScore();
+
+    return toDelete.length > 0;
   }
 
   updateScore() {
@@ -275,3 +278,13 @@ class Game {
 }
 
 export default Game;
+
+function mock(value: any) {
+  return function (
+    target: Object,
+    key: string | symbol,
+    desriptor: PropertyDescriptor
+  ) {
+
+  };
+}
